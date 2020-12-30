@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Registration Page!</h1>
+    <form method="post" action="{% url 'app:register' %}">
+        {% csrf_token %}
+
+        {% if form.errors %}
+        <p>There are errors in the form!</p>
+        {% endif %}
+
+        {{ form }}
+
+        <input type="submit" value="Register">
+    </form>
+
+{% endblock %}
