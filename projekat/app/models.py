@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
@@ -15,8 +16,10 @@ class TodoList(models.Model):
     content = models.TextField(blank=True) # a text field
     created = models.DateField(default=timezone.now().strftime("%Y-%m-%d")) # a date
     due_date = models.DateField(default=timezone.now().strftime("%Y-%m-%d")) # a date
-    category = models.ForeignKey(Category, default="general", on_delete=models.CASCADE) # a foreignkey
+    category = models.ForeignKey(Category, default="general", on_delete=models.SET_DEFAULT) # a foreignkey
+    owner = models.ForeignKey(User,default=1, on_delete=models.CASCADE)
+
     class Meta:
-        ordering = ["-created"] #ordering by the created field
+        ordering = ["due_date"] #ordering by the created field
         def __str__(self):
             return self.title

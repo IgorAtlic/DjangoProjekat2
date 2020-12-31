@@ -1,7 +1,7 @@
 from django.template import loader
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required, permission_required
-from django.shortcuts import get_object_or_404, render, redirect
+from django.shortcuts import get_object_or_404, render, redirect, get_list_or_404
 from django.urls import reverse
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
@@ -27,15 +27,17 @@ def register(request):
             password = form.cleaned_data['password1']
             user = authenticate(username=username, password=password)
             login(request, user)
-            return redirect('index')
+            return redirect('/')
     else:
         form = UserCreationForm()
 
     context = {'form' : form}
     return render(request, 'registration/register.html', context)
 
+@login_required
 def todo(request):
-  todos = TodoList.objects.all()  # quering all todos with the object manager
+  #todos = get_list_or_404(TodoList, owner = request.user)  # quering all todos with the object manager
+  todos = TodoList.objects.all()
   categories = Category.objects.all()  # getting all categories with object manager
   if request.method == "POST":  # checking if the request method is a POST
     if "taskAdd" in request.POST:  # checking if there is a request to add a todo
@@ -43,7 +45,7 @@ def todo(request):
       date = str(request.POST["date"])  # date
       category = request.POST["category_select"]  # category
       content = title + " -- " + date + " " + category  # content
-      Todo = TodoList(title=title, content=content, due_date=date, category=Category.objects.get(name=category))
+      Todo = TodoList(title=title, content=content, due_date=date, category=Category.objects.get(name=category), owner = request.user)
       Todo.save()  # saving the todo
       return redirect("/")  # reloading the page
     if "taskDelete" in request.POST: #checking if there is a request to delete a todo
