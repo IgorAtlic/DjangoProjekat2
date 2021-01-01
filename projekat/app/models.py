@@ -17,7 +17,6 @@ class TodoList(models.Model):
     created = models.DateField(default=timezone.now().strftime("%Y-%m-%d")) # a date
     due_date = models.DateField(default=timezone.now().strftime("%Y-%m-%d")) # a date
     category = models.ForeignKey(Category, default="general", on_delete=models.SET_DEFAULT) # a foreignkey
-    owner = models.ForeignKey(User,default=1, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ["due_date"] #ordering by the created field
