@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    addCategory
+{% endblock %}
+
+{% block content %}
+
+<div django-app="TaskManager">
+    <div class="container">
+
+         <form method="post" action="{% url 'app:addCat' %}">
+        {% csrf_token %}
+            <div class="content">
+            <h1>Categories</h1>
+                <a class="btn btn-primary" href="{% url 'app:todo' %}">All tasks</a>
+           <ul class="catList">
+            {% for cat in cats %} <!-- django template lang - for loop -->
+               <li class="taskItem">
+                   {% if cat.name == "General" %}
+                   <label for="{{ cat.id }}"><strong class="complete-">{{ cat.name }}</strong></label>
+                    {% else %}
+                <input type="radio" class="taskRadio" name="radio" id="{{ cat.id }}" value="{{ cat.id }}">
+                    <label for="{{ cat.id }}"><strong class="complete-">{{ cat.name }}</strong></label>
+                   {% endif %}
+                </li>
+            {% endfor %}
+            </div><!-- content -->
+
+
+        {% if form.errors %}
+        <p>There are errors in the form!</p>
+        {% endif %}
+
+        {{ form.as_ul }}
+
+       <button class="catAdd" name="catAdd" formnovalidate="" type="submit" onclick="$('input#sublist').click();">Add</button>
+            <button class="catDelete" name="catDelete" formnovalidate="" type="submit" onclick="$('input#sublist').click();">Delete</button>
+        </form>
+
+
+
+    </div><!-- container -->
+</div>
+
+{% endblock %}
+
+
+
+<

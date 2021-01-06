@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
-{% block content %}
 
+{% block title %}
+    app
+{% endblock %}
+
+{% block content %}
+    <H1>Welcome</H1>
     <H2>You are not logged in.</H2>
     <a href="{% url 'login'%}">Click here to login.</a>
 {% endblock %}
